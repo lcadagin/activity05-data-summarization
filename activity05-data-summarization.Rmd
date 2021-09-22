@@ -1,6 +1,6 @@
 ---
 title: "Activity 5"
-author: "Name"
+author: "Luke Cadagin"
 output: github_document
 ---
 
@@ -26,7 +26,7 @@ Compare this code output to the `load_data` chunk in your knitted Activity 4 `.m
 What does enclosing an assignment code (i.e., `object_name <- r_code`) in parentheses do?
 
 **Response**:
-
+Enclosing an assignment code in parentheses will cause your code to execute and print at the same time.
 
 ### Data Codebook
 
@@ -79,6 +79,11 @@ There are a number of ways to create a code chunk:
 Below, create a code chunk and name it `median_earnings`.
 Make sure there is an empty line above and below the code chunk.
 
+```{r median_earnings}
+median_all_majors <- college_recent_grads %>% 
+  summarize(median_income = median(median))
+median_all_majors
+```
 
 
 In your newly created R code chunk, verify that the median income for all majors was $36,000.
@@ -95,13 +100,18 @@ Be careful when you name your output summaries as we are dealing with things tha
 When I and obtaining numerical summaries for variables, I like to include the variable name in my summary name (e.g., `mean_med_earnings = mean(median)`).
 Create a code chunk and name it `summary_earnings`.
 
+```{r summary_earnings}
+summary_earnings <- college_recent_grads %>%
+  summarize(n = n(), mean_income = mean(median), standard_deviation_income = sd(median), minimum_income = min(median), median_income = median(median), maximum_income = max(median))
+summary_earnings
+```
 
 
 Provide a discussion on what you believe the distribution of median earnings will look like.
 You should discuss the center, spread, and potential shape only using these values - I do NOT want to see any data visualizations here.
 
 **Response**:
-
+I believe that the distribution of median earnings will be skewed right with the center from 36000 to 40000 and the standard deviation is fairly large at $11,470
 
 ### Median Earnings by Major Category
 
@@ -110,13 +120,21 @@ Using the `college_recent_grads` dataset and functions from `{dplyr}`, obtain si
 *Arrange* this summary table by the median earning.
 Create a code chunk and name it `major_earnings`.
 
+```{r major_earnings}
+major_earnings <- college_recent_grads %>%
+  group_by(major_category) %>% 
+  summarize(n = n(), mean_income = mean(median), standard_deviation_income = sd(median), minimum_income = min(median), median_income = median(median), maximum_income = max(median)) %>% 
+  arrange(median_income)
+  #knitr::kable()
+major_earnings
+```
 
 
 Provide a discussion on how each major compares to the overall distribution.
 You should discuss the center, spread, and potential shape only using these summary values - I do NOT want to see any data visualizations here.
 
 **Response**:
-
+The median_income for almost all the major_categories is at or below $40,000.  The standard devieations fluctuate a large amount between major categories.  The distribution of incomes for each major_category appears to be skewed right.
 
 Before we continue, add the following to the end of your pipeline (you will need to pipe first) in your `major_earnings` code chunk:
 
@@ -129,7 +147,7 @@ What changes about the output?
 When would this `knitr::kable` code be useful?
 
 **Response**:
-
+The `knitr::kable` code makes the output look much more professional for work or submitting documents.
 
 ![](README-img/noun_pause.png) **Planned Pause Point**: If you have any questions, contact your instructor. Otherwise feel free to continue on.
 
@@ -139,12 +157,19 @@ Let us see how well your descriptions in the [Median Earnings by Major Category]
 Plot the distribution of the variable `median` earnings of full-time, year-round workers for each `major_category` using the *boxplot* and *jitter* geometries.
 Create a code chunk and name it `major_boxplot`.
 
+```{r major_boxplot}
+college_recent_grads %>%
+  ggplot(mapping = aes(x = median, y = major_category))+
+  geom_boxplot(color = "blue")+
+  geom_jitter(alpha = .5)
+  
+```
 
 
 Provide a discussion on how your descriptions in the Median Earnings by Major Category section compares.
 
 **Response**:
-
+The center of most the major categories falls 
 
 ### Multiple Rankings
 
