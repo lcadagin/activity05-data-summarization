@@ -247,7 +247,9 @@ college_recent_grads %>%
 Provide a discussion on how your descriptions in the Median Earnings by
 Major Category section compares.
 
-**Response**: The center of most the major categories falls
+**Response**: The center of most the major categories falls between
+25,000 and 45,000. Engineering seems to really stick out with a median
+salary just under 60,000.
 
 ### Multiple Rankings
 
@@ -270,9 +272,44 @@ code chunk,
 4.  Arrange the results so that `major_category` appear in alphabetical
     order (“A” at the top).
 
+``` r
+college_recent_grads %>% 
+  group_by(major_category) %>% 
+  summarize(total = n_distinct(major), median_sharewomen = median(sharewomen), median_unemployment_rate = median(unemployment_rate), median_earnings = median(median)) %>% 
+  mutate(rank_total = min_rank(desc(total)), rank_median_sharewomen = min_rank(desc(median_sharewomen)), rank_median_unemployment_rate = min_rank(desc(median_unemployment_rate)), rank_median_earnings = min_rank(desc(median_earnings))) %>% 
+  arrange(major_category)
+```
+
+    ## # A tibble: 16 x 9
+    ##    major_category      total median_sharewomen median_unemploym… median_earnings
+    ##    <chr>               <int>             <dbl>             <dbl>           <dbl>
+    ##  1 Agriculture & Natu…    10            NA                0.0553           35000
+    ##  2 Arts                    8             0.667            0.0895           30750
+    ##  3 Biology & Life Sci…    14             0.583            0.0680           36300
+    ##  4 Business               13             0.441            0.0697           40000
+    ##  5 Communications & J…     4             0.672            0.0722           35000
+    ##  6 Computers & Mathem…    11             0.269            0.0908           45000
+    ##  7 Education              16             0.769            0.0488           32750
+    ##  8 Engineering            29             0.227            0.0598           57000
+    ##  9 Health                 12             0.783            0.0643           35000
+    ## 10 Humanities & Liber…    15             0.690            0.0817           32000
+    ## 11 Industrial Arts & …     7             0.232            0.0557           35000
+    ## 12 Interdisciplinary       1             0.771            0.0709           35000
+    ## 13 Law & Public Policy     5             0.476            0.0825           36000
+    ## 14 Physical Sciences      10             0.520            0.0511           39500
+    ## 15 Psychology & Socia…     9             0.799            0.0651           30000
+    ## 16 Social Science          9             0.543            0.0972           38000
+    ## # … with 4 more variables: rank_total <int>, rank_median_sharewomen <int>,
+    ## #   rank_median_unemployment_rate <int>, rank_median_earnings <int>
+
 Provide a discussion on how the `major_category` rankings compare.
 
-**Response**:
+**Response**: It appears that women have their lowest shares in
+Engineering, Computers/Math, and Industrial Arts/Consumer Services. They
+have their highest shares in Phycology, Health, and Interdisciplinary.
+The median earnings and median unemployment rates seemed to be rouphly
+inversly proportional with the highest earnings going to STEM fields
+such as Engineering and Computers/Math.
 
 ![](README-img/noun_pause.png) **(Final) Planned Pause Point**: If you
 have any questions, contact your instructor. Otherwise feel free to

@@ -169,7 +169,7 @@ college_recent_grads %>%
 Provide a discussion on how your descriptions in the Median Earnings by Major Category section compares.
 
 **Response**:
-The center of most the major categories falls 
+The center of most the major categories falls between 25,000 and 45,000.  Engineering seems to really stick out with a median salary just under 60,000.
 
 ### Multiple Rankings
 
@@ -185,12 +185,19 @@ In this code chunk,
 3. Assign/create a *rank* for each summarized value (rank for `total`, rank for `sharewomen`, etc.) and provide a meaningful name to each ranked column value.
 4. Arrange the results so that `major_category` appear in alphabetical order ("A" at the top).
 
+```{r category_rankings}
+college_recent_grads %>% 
+  group_by(major_category) %>% 
+  summarize(total = n_distinct(major), median_sharewomen = median(sharewomen), median_unemployment_rate = median(unemployment_rate), median_earnings = median(median)) %>% 
+  mutate(rank_total = min_rank(desc(total)), rank_median_sharewomen = min_rank(desc(median_sharewomen)), rank_median_unemployment_rate = min_rank(desc(median_unemployment_rate)), rank_median_earnings = min_rank(desc(median_earnings))) %>% 
+  arrange(major_category)
+```
 
 
 Provide a discussion on how the `major_category` rankings compare.
 
 **Response**:
-
+It appears that women have their lowest shares in Engineering, Computers/Math, and Industrial Arts/Consumer Services.  They have their highest shares in Phycology, Health, and Interdisciplinary.  The median earnings and median unemployment rates seemed to be rouphly inversly proportional with the highest earnings going to STEM fields such as Engineering and Computers/Math.
 
 ![](README-img/noun_pause.png) **(Final) Planned Pause Point**: If you have any questions, contact your instructor. Otherwise feel free to continue on.
 
